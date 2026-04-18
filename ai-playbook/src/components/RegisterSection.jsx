@@ -89,7 +89,17 @@ const RegistrationModal = ({ onClose }) => {
   };
 
   const handleSubmit = async (e) => {
+    console.log('FORM SUBMIT TRIGGERED');
     e.preventDefault();
+
+    console.log('FORM DATA:', form);
+
+    // Basic validation
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -101,10 +111,22 @@ const RegistrationModal = ({ onClose }) => {
       registrationId: Date.now().toString(),
     };
 
-    console.log('Sending request body:', requestBody);
+    console.log('Sending request...');
+    console.log('Request body:', requestBody);
+
+    // Check environment variable
+    const scriptUrl = process.env.REACT_APP_SCRIPT_URL;
+    console.log('Environment variable REACT_APP_SCRIPT_URL:', scriptUrl);
+
+    if (!scriptUrl) {
+      console.error('REACT_APP_SCRIPT_URL is not defined. Check your .env file.');
+      setError('Configuration error. Please contact support.');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxDsmgRwOvbkfcyWJimf7mfZJs1n5mauPR3XZOku8xNcc2v-xF0UttmhbF3u4nKfADRqg/exec', {
+      const response = await fetch(scriptUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
