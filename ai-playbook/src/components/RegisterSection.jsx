@@ -78,22 +78,46 @@ const Field = ({ label, type = 'text', name, value, onChange, required, placehol
 
 /* ===== Registration Modal ===== */
 const RegistrationModal = ({ onClose }) => {
-  const [form, setForm] = useState({ name: '', mobile: '', email: '', goal: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setError(''); // Clear error on input change
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setError('');
+
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxDsmgRwOvbkfcyWJimf7mfZJs1n5mauPR3XZOku8xNcc2v-xF0UttmhbF3u4nKfADRqg/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setForm({ name: '', email: '', phone: '' }); // Reset form
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+      console.error('Registration error:', err);
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1400);
+    }
   };
 
   return (
@@ -120,8 +144,8 @@ const RegistrationModal = ({ onClose }) => {
           {submitted ? (
             /* ===== SUCCESS STATE ===== */
             <div className="flex flex-col items-center text-center py-6">
-              <div className="text-7xl mb-4">🚀</div>
-              <h3 className="font-serif text-3xl font-bold text-[#2C2415] mb-2">You're in!</h3>
+              <div className="text-7xl mb-4">🎉</div>
+              <h3 className="font-serif text-3xl font-bold text-[#2C2415] mb-2">Registered successfully!</h3>
               <p className="font-sans text-[#7A6B5A] mb-6">
                 We'll send all the details to <strong>{form.email}</strong>. See you at the workshop!
               </p>
@@ -154,15 +178,6 @@ const RegistrationModal = ({ onClose }) => {
                   placeholder="What do we call you?"
                 />
                 <Field
-                  label="Mobile Number"
-                  name="mobile"
-                  type="tel"
-                  value={form.mobile}
-                  onChange={handleChange}
-                  required
-                  placeholder="+91 98765 43210"
-                />
-                <Field
                   label="Email Address"
                   name="email"
                   type="email"
@@ -172,18 +187,25 @@ const RegistrationModal = ({ onClose }) => {
                   placeholder="you@email.com"
                 />
                 <Field
-                  label="What do you want to learn or build?"
-                  name="goal"
-                  type="textarea"
-                  value={form.goal}
+                  label="Phone Number"
+                  name="phone"
+                  type="tel"
+                  value={form.phone}
                   onChange={handleChange}
-                  placeholder="Tell us! No wrong answers..."
+                  required
+                  placeholder="+91 98765 43210"
                 />
+
+                {error && (
+                  <div className="text-red-600 text-sm font-medium text-center bg-red-50 border border-red-200 rounded-lg p-3">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-hover mt-2 bg-[#E8614D] text-white font-sans font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-[#E8614D]/30 flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="btn-hover mt-2 bg-[#E8614D] text-white font-sans font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-[#E8614D]/30 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <span className="inline-flex items-center gap-2">
@@ -311,7 +333,7 @@ const RegisterSection = () => {
             <div className="flex gap-4 items-center">
               {/* Instagram */}
               <a
-                href="https://instagram.com/simranbuildss"
+                href="https://www.instagram.com/simranbuildss/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-hover flex items-center gap-2 bg-white/10 hover:bg-[#9B7FD4]/30 border border-white/20 text-white font-sans text-sm font-medium px-4 py-2.5 rounded-full transition-colors"
@@ -324,7 +346,7 @@ const RegisterSection = () => {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/919999999999"
+                href="https://chat.whatsapp.com/GOLC5H0nQym48xNHv07r4w"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-hover flex items-center gap-2 bg-white/10 hover:bg-[#25D366]/30 border border-white/20 text-white font-sans text-sm font-medium px-4 py-2.5 rounded-full transition-colors"
