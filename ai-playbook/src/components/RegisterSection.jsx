@@ -93,28 +93,37 @@ const RegistrationModal = ({ onClose }) => {
     setLoading(true);
     setError('');
 
+    const requestBody = {
+      fullName: form.name,
+      email: form.email,
+      contactNumber: form.phone,
+      expectations: '',
+      registrationId: Date.now().toString(),
+    };
+
+    console.log('Sending request body:', requestBody);
+
     try {
       const response = await fetch('https://script.google.com/macros/s/AKfycbxDsmgRwOvbkfcyWJimf7mfZJs1n5mauPR3XZOku8xNcc2v-xF0UttmhbF3u4nKfADRqg/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+      console.log('API response:', result);
+
+      if (result.result === 'success') {
         setSubmitted(true);
         setForm({ name: '', email: '', phone: '' }); // Reset form
       } else {
-        throw new Error('Registration failed');
+        throw new Error(result.message || 'Registration failed');
       }
     } catch (err) {
-      setError('Something went wrong. Please try again.');
       console.error('Registration error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
