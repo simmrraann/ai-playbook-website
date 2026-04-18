@@ -107,14 +107,13 @@ const RegistrationModal = ({ onClose }) => {
       fullName: form.name,
       email: form.email,
       contactNumber: form.phone,
-      expectations: '',
+      expectations: form.expectation || '',
       registrationId: Date.now().toString(),
     };
 
     console.log('Sending request...');
     console.log('Request body:', requestBody);
 
-    // Check environment variable
     const scriptUrl = process.env.REACT_APP_SCRIPT_URL;
     console.log('Environment variable REACT_APP_SCRIPT_URL:', scriptUrl);
 
@@ -126,26 +125,20 @@ const RegistrationModal = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch(scriptUrl, {
+      await fetch(scriptUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       });
 
-      const result = await response.json();
-      console.log('API response:', result);
-
-      if (result.result === 'success') {
-        setSubmitted(true);
-        setForm({ name: '', email: '', phone: '' }); // Reset form
-      } else {
-        throw new Error(result.message || 'Registration failed');
-      }
+      setSubmitted(true);
+      setForm({ name: '', email: '', phone: '' });
     } catch (err) {
       console.error('Registration error:', err);
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -176,15 +169,15 @@ const RegistrationModal = ({ onClose }) => {
             /* ===== SUCCESS STATE ===== */
             <div className="flex flex-col items-center text-center py-6">
               <div className="text-7xl mb-4">🎉</div>
-              <h3 className="font-serif text-3xl font-bold text-[#2C2415] mb-2">Registered successfully!</h3>
+              <h3 className="font-serif text-3xl font-bold text-[#2C2415] mb-2">You're in!</h3>
               <p className="font-sans text-[#7A6B5A] mb-6">
-                We'll send all the details to <strong>{form.email}</strong>. See you at the workshop!
+                Check your email for details.
               </p>
               <button
                 onClick={onClose}
                 className="btn-hover bg-[#9B7FD4] text-white font-sans font-semibold px-8 py-3 rounded-full"
               >
-                Can't wait! ✦
+                Close
               </button>
             </div>
           ) : (
