@@ -360,7 +360,7 @@ const RegisterSection = () => {
 
           <div className="max-w-4xl mx-auto mt-6 pt-6 border-t border-white/10 text-center">
             <p className="font-sans text-xs text-[#7A6B5A]">
-              © 2025 AI Playbook · Built with ♥ in Nashik
+              © 2025 AI Playbook · Built with ♥ by Simran
             </p>
           </div>
         </footer>
