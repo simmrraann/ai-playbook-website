@@ -322,7 +322,7 @@ const TEAM = [
   { id:1, name:'Simran',   role:'AI Student', bio:'3rd Year AI Engineering Student, I also create cintent around AI.', emoji:'🤖', bg:'linear-gradient(135deg,#C4AEFF,#9B7FD4)', face:'face-front' },
   { id:2, name:'Ishan',    role:'BBA Student',                      bio:'The business brain behind the playbook. Turns AI ideas into real-world strategies that actually work.',  emoji:'📊', bg:'linear-gradient(135deg,#F08070,#E8614D)', face:'face-right' },
   { id:3, name:'Pranjali', role:'CS Student',          bio:'Execution wizard and tool master. If there is a workflow to automate, Pranjali has already done it.',    emoji:'⚡', bg:'linear-gradient(135deg,#A8D8B0,#6BAE78)', face:'face-back'  },
-  { id:4, name:'Rohit',    role:'RAG & Chatbot',               bio:'Full-stack builder with a love for shipping fast. Turns crazy ideas into working products overnight.',    emoji:'🚀', bg:'linear-gradient(135deg,#FFD6A5,#F4A261)', face:'face-left'  },
+  { id:4, name:'Rohan',    role:'RAG & Chatbot',               bio:'Full-stack builder with a love for shipping fast. Turns crazy ideas into working products overnight.',    emoji:'🚀', bg:'linear-gradient(135deg,#FFD6A5,#F4A261)', face:'face-left'  },
   { id:5, name:'Arjan',    role:'AI/ML Engineer',              bio:'Specialized in AI/ML also Tech Speaker.',               emoji:'🎨', bg:'linear-gradient(135deg,#B5EAD7,#52B788)', face:'face-top'   },
 ];
 
