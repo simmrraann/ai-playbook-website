@@ -1,5 +1,6 @@
 console.log("FORM SUBMIT CLICKED");
 import { useState, useRef, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
 
 /**
  * RegisterSection – Full-screen coral envelope that opens into a registration form modal.
@@ -90,64 +91,36 @@ const RegistrationModal = ({ onClose }) => {
   };
 
   const handleSubmit = async (e) => {
-    console.log('FORM SUBMIT TRIGGERED');
     e.preventDefault();
+    console.log("FORM SUBMITTED");
 
-    console.log('FORM DATA:', form);
-
-    // Basic validation
-    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      setError('Please fill in all required fields.');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    const requestBody = {
-      fullName: form.name,
-      email: form.email,
-      contactNumber: form.phone,
-      expectations: form.expectation || '',
-      registrationId: Date.now().toString(),
-    };
-
-    console.log('Sending request...');
-    console.log("REQUEST BODY:", requestBody);
-
-    const scriptUrl = process.env.REACT_APP_SCRIPT_URL;
-    console.log("SCRIPT URL:", scriptUrl);
-
-    if (!scriptUrl) {
-      console.error('REACT_APP_SCRIPT_URL is not defined. Check your .env file.');
-      setError('Script URL not configured');
-      setLoading(false);
+    if (!form.name || !form.email || !form.phone) {
+      alert("Fill all fields");
       return;
     }
 
     try {
-      await fetch(scriptUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await emailjs.send(
+        "service_bg34rdt",
+        "template_uwiazvg",
+        {
+          name: form.name,
+          email: form.email,
         },
-        body: JSON.stringify(requestBody),
-      });
+        "gt5wR4uwOOEBuj5zX"
+      );
 
+      console.log("SUCCESS", res);
       setSubmitted(true);
-      setForm({ name: '', email: '', phone: '' });
     } catch (err) {
-      console.error('Registration error:', err);
-      setError('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
+      console.error("FAILED", err);
+      alert("Email failed");
     }
   };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="modal-enter bg-[#FAF6F1] rounded-3xl shadow-2xl w-full max-w-md relative overflow-hidden">
         {/* Top coral strip */}
@@ -229,6 +202,7 @@ const RegistrationModal = ({ onClose }) => {
                 <button
                   type="submit"
                   disabled={loading}
+                  onClick={() => console.log("BUTTON CLICKED")}
                   className="btn-hover mt-2 bg-[#E8614D] text-white font-sans font-bold text-base px-8 py-4 rounded-2xl shadow-lg shadow-[#E8614D]/30 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {loading ? (
