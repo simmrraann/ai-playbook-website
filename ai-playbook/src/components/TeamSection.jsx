@@ -45,7 +45,7 @@ const teamMembers = [
   },
   {
     id: 5,
-    name: 'Rohit',
+    name: 'Rohan',
     role: 'Engineer & Builder',
     bio: 'Specialist in RAG (Retrieval-Augmented Generation) Systems. Builds intelligent chatbots and AI-driven applications focused on solving real-world problems.',
     emoji: '🚀',
