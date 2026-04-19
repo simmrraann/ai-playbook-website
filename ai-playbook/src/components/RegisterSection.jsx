@@ -113,14 +113,14 @@ const RegistrationModal = ({ onClose }) => {
     };
 
     console.log('Sending request...');
-    console.log('Request body:', requestBody);
+    console.log("REQUEST BODY:", requestBody);
 
     const scriptUrl = process.env.REACT_APP_SCRIPT_URL;
-    console.log('Environment variable REACT_APP_SCRIPT_URL:', scriptUrl);
+    console.log("SCRIPT URL:", scriptUrl);
 
     if (!scriptUrl) {
       console.error('REACT_APP_SCRIPT_URL is not defined. Check your .env file.');
-      setError('Configuration error. Please contact support.');
+      setError('Script URL not configured');
       setLoading(false);
       return;
     }
