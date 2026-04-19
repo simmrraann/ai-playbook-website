@@ -1,6 +1,7 @@
 console.log("FORM SUBMIT CLICKED");
 import { useState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import { supabase } from "../supabaseClient";
 
 /**
  * RegisterSection – Full-screen coral envelope that opens into a registration form modal.
@@ -99,22 +100,22 @@ const RegistrationModal = ({ onClose }) => {
       return;
     }
 
-    try {
-      const res = await emailjs.send(
-        "service_bg34rdt",
-        "template_uwiazvg",
+    const { error } = await supabase
+      .from("registrations")
+      .insert([
         {
-          name: form.name,
+          full_name: form.name,
           email: form.email,
-        },
-        "gt5wR4uwOOEBuj5zX"
-      );
+          phone: form.phone
+        }
+      ]);
 
-      console.log("SUCCESS", res);
+    if (error) {
+      console.error("ERROR:", error);
+      alert("Failed to register");
+    } else {
+      console.log("SUCCESS");
       setSubmitted(true);
-    } catch (err) {
-      console.error("FAILED", err);
-      alert("Email failed");
     }
   };
 
