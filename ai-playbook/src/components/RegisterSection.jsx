@@ -1,3 +1,4 @@
+console.log("FORM SUBMIT CLICKED");
 import { useState, useRef, useEffect } from 'react';
 
 /**
@@ -127,7 +128,6 @@ const RegistrationModal = ({ onClose }) => {
     try {
       await fetch(scriptUrl, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
